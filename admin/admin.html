@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Dashboard — TasteTrail</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      :root{
+        --bg: #f7f9fb;
+        --card: #ffffff;
+        --primary: #ff7a18;
+        --muted: #6b7280;
+        --radius: 12px;
+        --shadow: 0 10px 30px rgba(11,22,39,0.06);
+      }
+      *{box-sizing:border-box}
+      body{font-family:'Poppins',sans-serif;margin:0;background:var(--bg);color:#222}
+
+      header{background:linear-gradient(90deg,var(--primary),#ffb572);color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+      header .brand{display:flex;align-items:center;gap:12px}
+      header .brand h1{margin:0;font-size:20px}
+      header .actions{display:flex;gap:10px;align-items:center}
+
+      .container{max-width:1200px;margin:20px auto;padding:0 18px}
+      .layout{display:grid;grid-template-columns:260px 1fr;gap:18px}
+
+      /* sidebar */
+      .sidebar{background:var(--card);padding:16px;border-radius:var(--radius);box-shadow:var(--shadow)}
+      .nav{display:flex;flex-direction:column;gap:8px}
+      .nav a{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;color:#374151;text-decoration:none}
+      .nav a:hover{background:linear-gradient(90deg,rgba(255,122,24,0.06),rgba(255,156,74,0.03));color:var(--primary)}
+
+      /* main */
+      .main{display:flex;flex-direction:column;gap:18px}
+      .cards{display:flex;gap:12px;flex-wrap:wrap}
+      .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow);flex:1;min-width:180px}
+      .card h3{margin:0;font-size:13px;color:var(--muted)}
+      .card .num{font-size:22px;font-weight:700;margin-top:8px}
+
+      .panel{background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+      .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+      .toolbar input[type=search]{flex:1;padding:10px;border-radius:10px;border:1px solid #e6e9ef}
+      .btn{padding:9px 12px;border-radius:10px;border:none;background:var(--primary);color:#fff;cursor:pointer}
+      .btn.ghost{background:transparent;color:var(--primary);border:1px solid rgba(255,122,24,0.12)}
+      .btn.danger{background:#ef4444}
+
+      .table-wrap{overflow:auto;border-radius:8px}
+      table{width:100%;border-collapse:collapse}
+      th,td{padding:12px;border-bottom:1px solid #f1f3f5;text-align:left}
+      th{background:#fff;font-weight:600;color:#444}
+      tr:hover td{background:#fbfbff}
+
+      .muted{color:var(--muted)}
+
+      /* responsive */
+      @media(max-width:980px){.layout{grid-template-columns:1fr}.cards{flex-direction:row}} 
+      @media(max-width:640px){header{padding:14px} .cards{flex-direction:column}}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><h1>TasteTrail Admin</h1><div class="muted">Control Panel</div></div>
+      <div class="actions">
+        <button id="fullscreen-btn" class="btn ghost" title="Toggle fullscreen"><i class="fa-solid fa-expand"></i>&nbsp;<span id="fs-label">Full</span></button>
+        <button id="logout-btn" class="btn ghost"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Logout</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="layout">
+        <aside class="sidebar">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--primary),#ffb572);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">AD</div>
+            <div>
+              <div style="font-weight:700">Admin</div>
+              <div class="muted" style="font-size:13px">admin@tastyc.com</div>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <a href="/"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#customers"><i class="fa-solid fa-users"></i> Customers</a>
+            <a href="#orders"><i class="fa-solid fa-receipt"></i> Orders</a>
+            <a href="#settings"><i class="fa-solid fa-gear"></i> Settings</a>
+          </nav>
+        </aside>
+
+        <section class="main">
+          <div class="cards">
+            <div class="card">
+              <h3>Total Customers</h3>
+              <div class="num" id="stat-customers">0</div>
+            </div>
+            <div class="card">
+              <h3>Active Orders</h3>
+              <div class="num" id="stat-orders">0</div>
+            </div>
+            <div class="card">
+              <h3>Revenue Today</h3>
+              <div class="num" id="stat-revenue">₹0</div>
+            </div>
+          </div>
+
+          <div class="panel" id="customers">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <h2 style="margin:0">Customers</h2>
+              <div class="muted">Showing <span id="cust-count">0</span></div>
+            </div>
+
+            <div class="toolbar">
+              <input id="search" type="search" placeholder="Search customers by name or email..." />
+              <button id="add-btn" class="btn"><i class="fa-solid fa-plus"></i>&nbsp;Add</button>
+              <button id="seed-btn" class="btn ghost">Seed Data</button>
+              <button id="export-btn" class="btn ghost">Export CSV</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Email</th><th>Phone</th><th>Last Order</th><th></th></tr>
+                </thead>
+                <tbody id="customers-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel" id="orders">
+            <h2 style="margin:0 0 8px 0">Recent Orders</h2>
+            <div class="muted" style="margin-bottom:8px">Latest 6 orders</div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody id="orders-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Details modal (simple) -->
+    <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;z-index:9999">
+      <div style="background:#fff;padding:16px;border-radius:10px;max-width:520px;width:92%;box-shadow:0 12px 30px rgba(0,0,0,0.25)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong id="modal-title">Customer</strong><button id="modal-close" class="btn ghost">Close</button></div>
+        <div id="modal-body" class="muted"></div>
+      </div>
+    </div>
+
+    <script>
+      // Simple client-side admin dashboard functionality
+      const STORAGE_KEY = 'tastyc_customers';
+      const ORDERS_KEY = 'tastyc_orders';
+
+      const el = id => document.getElementById(id);
+
+      function safeRead(key){ try{ return JSON.parse(localStorage.getItem(key)||'[]') }catch(e){ return [] } }
+      function safeWrite(key,val){ localStorage.setItem(key, JSON.stringify(val)) }
+
+      // Seed sample data
+      function seedData(){
+        const customers = [
+          {id:1,name:'Asha Patel',email:'asha.patel@example.com',phone:'9876543210',lastOrder:'2025-11-10'},
+          {id:2,name:'Ravi Kumar',email:'ravi.kumar@example.com',phone:'9812345678',lastOrder:'2025-11-12'},
+          {id:3,name:'Nisha Mehta',email:'nisha.mehta@example.com',phone:'9820011223',lastOrder:'2025-11-11'},
+        ];
+        const orders = [
+          {id:'ORD-1001',customer:'Asha Patel',amount:450,status:'Delivered'},
+          {id:'ORD-1002',customer:'Ravi Kumar',amount:780,status:'Preparing'},
+          {id:'ORD-1003',customer:'Nisha Mehta',amount:320,status:'Delivered'},
+        ];
+        safeWrite(STORAGE_KEY, customers);
+        safeWrite(ORDERS_KEY, orders);
+        renderAll();
+      }
+
+      // Render customers table
+      function renderCustomers(filter=''){
+        const rows = safeRead(STORAGE_KEY);
+        const tbody = el('customers-tbody'); tbody.innerHTML='';
+        const q = (filter||'').toLowerCase();
+        const filtered = rows.filter(r=> !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q) || (r.phone||'').includes(q));
+        filtered.forEach(r=>{
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${r.name}</td>
+            <td>${r.email}</td>
+            <td>${r.phone||'—'}</td>
+            <td>${r.lastOrder||'—'}</td>
+            <td style="text-align:right"><button class="btn ghost" data-id="${r.id}" onclick="viewCustomer(${r.id})">View</button>&nbsp;<button class="btn danger" onclick="deleteCustomer(${r.id})">Delete</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+        el('cust-count').textContent = filtered.length;
+        el('stat-customers').textContent = rows.length;
+      }
+
+      function renderOrders(){
+        const rows = safeRead(ORDERS_KEY);
+        const tbody = el('orders-tbody'); tbody.innerHTML='';
+        rows.slice(0,6).forEach(o=>{
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${o.id}</td><td>${o.customer}</td><td>₹${o.amount}</td><td>${o.status}</td>`;
+          tbody.appendChild(tr);
+        });
+        el('stat-orders').textContent = rows.filter(o=> o.status !== 'Delivered').length;
+        el('stat-revenue').textContent = '₹' + rows.reduce((s,x)=>s+(x.amount||0),0);
+      }
+
+      function renderAll(){ renderCustomers(el('search').value); renderOrders(); }
+
+      // CRUD-ish actions
+      function viewCustomer(id){
+        const rows = safeRead(STORAGE_KEY); const c = rows.find(x=>x.id==id); if(!c) return alert('Not found');
+        el('modal-title').textContent = c.name;
+        el('modal-body').innerHTML = `<div><strong>Email:</strong> ${c.email}</div><div><strong>Phone:</strong> ${c.phone||'—'}</div><div style="margin-top:8px"><strong>Last Order:</strong> ${c.lastOrder||'—'}</div>`;
+        el('modal').style.display='flex';
+      }
+
+      function deleteCustomer(id){ if(!confirm('Delete this customer?')) return; let rows = safeRead(STORAGE_KEY); rows = rows.filter(r=> r.id!=id); safeWrite(STORAGE_KEY, rows); renderAll(); }
+
+      // Add a quick customer form (prompt-based to keep simple)
+      function addCustomer(){
+        const name = prompt('Customer name'); if(!name) return;
+        const email = prompt('Email');
+        const phone = prompt('Phone');
+        const rows = safeRead(STORAGE_KEY);
+        const id = rows.length ? (Math.max(...rows.map(r=>r.id))+1) : 1;
+        rows.unshift({id,name,email,phone,lastOrder: new Date().toISOString().slice(0,10)});
+        safeWrite(STORAGE_KEY, rows);
+        renderAll();
+      }
+
+      // Export CSV
+      function exportCSV(){
+        const rows = safeRead(STORAGE_KEY);
+        if(!rows.length) return alert('No customers to export');
+        const keys = ['id','name','email','phone','lastOrder'];
+        const csv = [keys.join(',')].concat(rows.map(r=>keys.map(k=>`"${String(r[k]||'').replace(/"/g,'""')}"`).join(','))).join('\n');
+        const blob = new Blob([csv],{type:'text/csv'}); const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download='customers.csv'; a.click(); URL.revokeObjectURL(url);
+      }
+
+      // Fullscreen toggle
+      const fsBtn = el('fullscreen-btn'); fsBtn.addEventListener('click', async ()=>{
+        try{
+          if(!document.fullscreenElement){ await document.documentElement.requestFullscreen(); el('fs-label').textContent='Exit'; }
+          else{ await document.exitFullscreen(); el('fs-label').textContent='Full'; }
+        }catch(e){ console.warn('Fullscreen error', e) }
+      });
+
+      // Event bindings
+      el('search').addEventListener('input', e=> renderCustomers(e.target.value));
+      el('add-btn').addEventListener('click', addCustomer);
+      el('seed-btn').addEventListener('click', ()=>{ if(confirm('Seed sample data? This will overwrite existing customers.')) seedData(); });
+      el('export-btn').addEventListener('click', exportCSV);
+      el('modal-close').addEventListener('click', ()=> el('modal').style.display='none');
+      el('logout-btn').addEventListener('click', ()=>{ if(confirm('Sign out?')) window.location.href='/'; });
+
+      // Init: if no customers present, seed minimal sample for first-time
+      (function init(){
+        if(!localStorage.getItem(STORAGE_KEY)){
+          safeWrite(STORAGE_KEY, []);
+        }
+        if(!localStorage.getItem(ORDERS_KEY)) safeWrite(ORDERS_KEY, []);
+        renderAll();
+      })();
+    </script>
+  </body>
+</html>

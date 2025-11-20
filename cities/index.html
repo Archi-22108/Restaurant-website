@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Cities</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">Tasty<span>c</span></div>
+            <nav id="navbar">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/cities">Cities</a></li>
+                    <li><a href="/famous-foods">Famous Dishes</a></li>
+                    <li><a href="/contact-us">Contact Us</a></li>
+
+                </ul>
+            </nav>
+            
+
+            <!-- Mobile Menu Button -->
+            <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        </div>
+    </header>
+    <section class="about-section">
+        <div class="about-content">
+            <h1>Explore Cities</h1>
+        </div>
+        <div class="scroll-down">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+
+    <section class="cities-section section">
+        <div class="container">
+            <div class="cities-header">
+                <h2>Explore Cities</h2>
+                <input type="text" id="searchCity" placeholder="Search city...">
+            </div>
+
+            <div class="cities-grid" id="citiesContainer">
+                <!-- Cards will be added dynamically -->
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-main">
+
+                <!-- About Us -->
+                <div class="footer-box">
+                    <h3>About us</h3>
+                    <p>
+              Discover the best restaurants in Gujarat! From street food to fine dining, find the perfect spot for your cravings.
+            </p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-box quick-links-box">
+                    <h3>Quick Links</h3>
+                    <div class="quick-links-row">
+              <a href="/">Home</a>
+              <a href="/gallery">Gallery</a>
+              <a href="/contact-us">Contact</a>
+<a href="/admin">Admin</a>
+            </div>
+                </div>
+
+                <!-- Gallery -->
+                <div class="footer-box">
+                    <h3>Gallery</h3>
+                    <div class="gallery">
+                        <img src="/assets/images/banner-3.jpg" alt="gallery">
+                        <img src="/assets/images/footer-bg.jpg" alt="gallery">
+                        <img src="/assets/images/banner-1.jpg" alt="gallery">
+                        <img src="/assets/images/banner-2.jpg" alt="gallery">
+                    </div>
+                    <a href="/gallery" class="footer-link">SEE MORE</a>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>© Tastyc 2022. All rights reserved.</p>
+                <a href="#" class="back-to-top">BACK TO TOP</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/4e4f2b6a66.js" crossorigin="anonymous"></script>
+    <script src="/assets/js/script.js"></script>
+
+    <script>
+        // Sample Gujarat cities
+        const cities = [
+            {
+                name: "Rajkot",
+                description: "Known for delicious street food and cultural heritage.",
+                image: "/assets/images/rajkot-11.jpg",
+                link: "/cities/rajkot"
+            },
+            {
+                name: "Ahmedabad",
+                description: "A UNESCO World Heritage City with rich cuisine.",
+                image: "/assets/images/ahmedabad-11.jpg",
+                link: "/cities/ahmedabad"
+            },
+            {
+                name: "Vadodara",
+                description: "Famous for arts, culture, and royal food traditions.",
+                image: "/assets/images/vadodara-112.jpg",
+                link: "/cities/vadodara"
+            },
+            {
+                name: "Surat",
+                description: "Popular for diamond market and lip-smacking food.",
+                image: "/assets/images/surat-11.jpg",
+                link: "/cities/surat"
+            }
+        ];
+
+        const container = document.getElementById("citiesContainer");
+
+        function renderCities(list) {
+            container.innerHTML = "";
+            list.forEach(city => {
+                container.innerHTML += `
+          <div class="city-card">
+            <img src="${city.image}" alt="${city.name}">
+            <div class="city-content">
+              <h3>${city.name}</h3>
+              <p>${city.description}</p>
+              <a href="${city.link}">View City</a>
+            </div>
+          </div>
+        `;
+            });
+        }
+
+        // Initial render
+        renderCities(cities);
+
+        // Search functionality
+        document.getElementById("searchCity").addEventListener("input", function () {
+            const searchValue = this.value.toLowerCase();
+            const filtered = cities.filter(c => c.name.toLowerCase().includes(searchValue));
+            renderCities(filtered);
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Famous Surat Restaurants</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/assets/css/surat-restaurants.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <div class="logo">Tasty<span>c</span></div>
+        <nav id="navbar">
+          <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/cities">Cities</a></li>
+                    <li><a href="/famous-foods">Famous Dishes</a></li>
+                    <li><a href="/contact-us">Contact Us</a></li>
+
+                </ul>
+        </nav>
+        
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      </div>
+    </header>
+
+    <!-- Banner -->
+    <section class="about-section">
+      <div class="about-content">
+        <h1>Famous Restaurants in Surat</h1>
+      </div>
+      <div class="scroll-down">
+        <div class="mouse"></div>
+      </div>
+    </section>
+
+    <!-- Restaurants Section -->
+    <section class="surat-restaurants-section">
+      <div class="container">
+        <h2>Top Restaurants in Surat</h2>
+        <div class="surat-restaurants-grid" id="suratRestaurantsContainer">
+          <!-- JS will load Surat restaurants -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-box">
+            <h3>About us</h3>
+            <p>
+              Discover the best restaurants in Gujarat! From street food to fine dining, find the perfect spot for your cravings.
+            </p>
+            <div class="footer-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-x-twitter"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-box quick-links-box">
+            <h3>Quick Links</h3>
+            <div class="quick-links-row">
+              <a href="/">Home</a>
+              <a href="/gallery">Gallery</a>
+              <a href="/contact-us">Contact</a>
+<a href="/admin">Admin</a>
+            </div>
+          </div>
+
+          <div class="footer-box">
+            <h3>Gallery</h3>
+            <div class="gallery">
+              <img src="/assets/images/banner-3.jpg" alt="gallery" />
+              <img src="/assets/images/footer-bg.jpg" alt="gallery" />
+              <img src="/assets/images/banner-1.jpg" alt="gallery" />
+              <img src="/assets/images/banner-2.jpg" alt="gallery" />
+            </div>
+            <a href="/gallery" class="footer-link">SEE MORE</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© Tastyc 2025. All rights reserved.</p>
+          <a href="#" class="back-to-top">BACK TO TOP</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+      const suratRestaurants = [
+        {
+          name: "Gopi Dining Hall",
+          rating: 4.6,
+          image: "/assets/images/surat.jpg",
+          page: "/cities/surat/gopi-dining-hall"
+        },
+        {
+          name: "Veg Village",
+          rating: 4.4,
+          image: "/assets/images/surat-2.jpg",
+          page: "/cities/surat/veg-village"
+        },
+        {
+          name: "Dil Se Re Restaurant",
+          rating: 4.3,
+          image: "/assets/images/surat-3.jpg",
+          page: "/cities/surat/gopi-dining-hall"
+        },
+        {
+          name: "The Grand Bhagwati",
+          rating: 4.7,
+          image: "/assets/images/surat-4.jpg",
+          page: "/cities/surat/veg-village"
+        },
+      ];
+
+      const suratContainer = document.getElementById("suratRestaurantsContainer");
+
+      function renderSuratRestaurants(list) {
+      suratContainer.innerHTML = "";
+      list.forEach((r) => {
+        suratContainer.innerHTML += `
+          <a href="${r.page}" class="surat-restaurant-card">
+            <img src="${r.image}" alt="${r.name}">
+            <div class="surat-restaurant-content">
+              <h3>${r.name}</h3>
+              <div class="surat-rating">⭐ ${r.rating}</div>
+            </div>
+          </a>
+        `;
+      });
+    }
+
+      renderSuratRestaurants(suratRestaurants);
+    </script>
+  </body>
+</html>
